@@ -12,6 +12,10 @@ export default function Index() {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={styles.container}>
       {/* TOPO (HEADER) */}
       <View style={styles.topo}>
+        <View>
+            <Text style={styles.logoP1}>Café</Text>
+            <Text style={styles.logoP2}>Central</Text>
+          </View>
         <View style={styles.menu}>
           <Link href='/'>
             <Text style={[styles.menuItem, styles.ativo]}> Início </Text>
@@ -96,16 +100,31 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  menu: {
-    flexDirection: 'row',
-    gap: 15,
-  },
-  menuItem: {
-    color: '#f6f6f6',
+
+  logoP1: {
+    color: '#fff',
+    fontSize: 24,
     fontWeight: 'bold',
   },
+
+  logoP2: {
+    color: '#c7a17a',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+
+  menu: {
+    marginTop: 10,
+    alignItems: 'center',
+    gap: 8,
+  },
+  menuItem: {
+    color: '#fff',
+    fontSize: 16,
+  },
   ativo: {
-    color: '#a3e635',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
   principal: {
     padding: 24,
