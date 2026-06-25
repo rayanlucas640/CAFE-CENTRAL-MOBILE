@@ -1,63 +1,103 @@
 import { Link } from 'expo-router';
 import { useState } from 'react';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
 import {
+  Alert,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Alert,
+  View,
 } from 'react-native';
 
+const API_URL = "http://localhost:3000";
+
 export default function Contato() {
+
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [mensagem, setMensagem] = useState('');
 
-  const enviarFormulario = () => {
-    if (nome === '' || email === '' || mensagem === '') {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+  const [mensagemSistema, setMensagemSistema] = useState('');
+  const [tipoMensagem, setTipoMensagem] = useState('');
+
+  async function enviarFormulario() {
+
+    // VALIDAÇÕES
+    if (nome === '') {
+      setMensagemSistema("Digite seu nome!");
+      setTipoMensagem("erro");
       return;
     }
 
-    Alert.alert('Enviado', `Obrigado ${nome}, recebemos sua mensagem!`);
+    if (email === '') {
+      setMensagemSistema("Digite seu e-mail!");
+      setTipoMensagem("erro");
+      return;
+    }
 
-    setNome('');
-    setEmail('');
-    setMensagem('');
-  };
+    if (!email.includes("@") || !email.includes(".com")) {
+      setMensagemSistema("Digite um e-mail válido!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (mensagem === '') {
+      setMensagemSistema("Digite uma mensagem!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (mensagem.length < 10) {
+      setMensagemSistema("A mensagem deve ter pelo menos 10 caracteres!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    // API (opcional se backend existir)
+    try {
+      const resposta = await fetch(`${API_URL}/contato`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          nome,
+          email,
+          mensagem
+        })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+
+        setMensagemSistema(dados.mensagem || `Obrigado ${nome}, mensagem enviada!`);
+        setTipoMensagem("sucesso");
+
+        setNome('');
+        setEmail('');
+        setMensagem('');
+
+      } else {
+        setMensagemSistema(dados.erro || "Erro ao enviar mensagem");
+        setTipoMensagem("erro");
+      }
+
+    } catch (erro) {
+      setMensagemSistema("Erro ao conectar com o servidor");
+      setTipoMensagem("erro");
+    }
+  }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
-      <View style={styles.topo}>
-        <Link href="/">
-          <View>
-            <Text style={styles.logoP1}>Café</Text>
-            <Text style={styles.logoP2}>Central</Text>
-          </View>
-        </Link>
-
-        <View style={styles.menu}>
-          <Link href="/">
-            <Text style={styles.menuItem}>Início</Text>
-          </Link>
-
-          <Link href="/sobre">
-            <Text style={styles.menuItem}>Sobre</Text>
-          </Link>
-
-          <Link href="/cardapio">
-            <Text style={styles.menuItem}>Cardápio</Text>
-          </Link>
-
-          <Link href="/contato">
-            <Text style={[styles.menuItem, styles.ativo]}>Contato</Text>
-          </Link>
-        </View>
-      </View>
+      <Header ativo="contato"></Header>
 
       {/* CONTEÚDO */}
       <View style={styles.container}>
@@ -90,26 +130,33 @@ export default function Contato() {
         <TouchableOpacity style={styles.botao} onPress={enviarFormulario}>
           <Text style={styles.textoBotao}>Enviar Mensagem</Text>
         </TouchableOpacity>
+
+        {/* Mensagem de validação visível na tela */}
+        {mensagemSistema !== '' && (
+          <Text style={{ marginTop: 10, textAlign: 'center', color: mensagemSistema.startsWith('Erro') ? 'red' : 'green' }}>
+            {mensagemSistema}
+          </Text>
+        )}
       </View>
 
       {/* RODAPÉ */}
-      <View style={styles.rodape}>
-        <Text style={styles.textoRodape}>
-          © 2026 Café Central. Todos os direitos reservados.
-        </Text>
-
-        <Link href="/contato">
-          <Text style={styles.linkRodape}>
-            Entre em contato
-          </Text>
-        </Link>
-      </View>
+      <Footer></Footer>
 
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+
+  corpo: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+
+  scrollContainer: {
+    flexGrow: 1,
+  },
+
   topo: {
     backgroundColor: '#1f3b2c',
     padding: 20,
@@ -146,7 +193,6 @@ const styles = StyleSheet.create({
 
   container: {
     padding: 20,
-    justifyContent: 'space-between',
   },
 
   tituloPagina: {
@@ -185,7 +231,8 @@ const styles = StyleSheet.create({
   rodape: {
     padding: 20,
     alignItems: 'center',
-    backgroundColor: '#1f3b2c'
+    backgroundColor: '#1f3b2c',
+    marginTop: 'auto',
   },
 
   textoRodape: {

@@ -10,76 +10,109 @@ import {
   Alert,
 } from 'react-native';
 
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
+
+const API_URL = "http://localhost:3000";
 
 export default function Cadastro() {
+
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  const realizarCadastro = () => {
-    if (nome === '' || email === '' || senha === '') {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+  const [mensagemSistema, setMensagemSistema] = useState('');
+  const [tipoMensagem, setTipoMensagem] = useState('');
+
+  const router = useRouter();
+
+  async function realizarCadastro() {
+
+    // VALIDAÇÕES
+    if (nome === '') {
+      setMensagemSistema("Digite seu nome!");
+      setTipoMensagem("erro");
       return;
     }
 
-    Alert.alert(
-      'Sucesso',
-      `Cadastro de ${nome} realizado com sucesso!`
-    );
+    if (/\d/.test(nome)) {
+      setMensagemSistema("O nome não pode conter números!");
+      setTipoMensagem("erro");
+      return;
+    }
 
-    setNome('');
-    setEmail('');
-    setSenha('');
-  };
+    if (email === '') {
+      setMensagemSistema("Digite seu e-mail!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (!email.includes("@") || !email.includes(".com")) {
+      setMensagemSistema("Digite um e-mail válido!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (senha === '') {
+      setMensagemSistema("Digite sua senha!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (senha.length < 6) {
+      setMensagemSistema("A senha deve ter pelo menos 6 caracteres!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    // API
+    try {
+      const resposta = await fetch(`${API_URL}/cadastro`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          nome,
+          email,
+          senha
+        })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+
+        setMensagemSistema(dados.mensagem || "Cadastro realizado com sucesso!");
+        setTipoMensagem("sucesso");
+
+        setNome('');
+        setEmail('');
+        setSenha('');
+
+        // redireciona após sucesso
+        setTimeout(() => {
+          router.push('/login');
+        }, 800);
+
+      } else {
+        setMensagemSistema(dados.erro || "Erro ao cadastrar");
+        setTipoMensagem("erro");
+      }
+
+    } catch (erro) {
+      setMensagemSistema("Erro ao conectar com o servidor");
+      setTipoMensagem("erro");
+    }
+  }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
-      <View style={styles.topo}>
-
-        <Link href="/">
-          <View>
-            <Text style={styles.logoP1}>Café</Text>
-            <Text style={styles.logoP2}>Central</Text>
-          </View>
-        </Link>
-
-        <View style={styles.menu}>
-
-          <Link href="/">
-            <Text style={styles.menuItem}>
-              Início
-            </Text>
-          </Link>
-
-          <Link href="/sobre">
-            <Text style={styles.menuItem}>
-              Sobre
-            </Text>
-          </Link>
-
-          <Link href="/cardapio">
-            <Text style={styles.menuItem}>
-              Cardápio
-            </Text>
-          </Link>
-
-          <Link href="/contato">
-            <Text style={styles.menuItem}>
-              Contato
-            </Text>
-          </Link>
-
-          <Link href="/cadastro">
-            <Text style={[styles.menuItem, styles.ativo]}>
-              Cadastro
-            </Text>
-          </Link>
-
-        </View>
-      </View>
+      <Header ativo="cadastro"></Header>
 
       {/* CONTEÚDO */}
       <View style={styles.container}>
@@ -96,10 +129,7 @@ export default function Cadastro() {
 
           {/* NOME */}
           <View style={styles.campo}>
-            <Text style={styles.label}>
-              Nome
-            </Text>
-
+            <Text style={styles.label}>Nome</Text>
             <TextInput
               style={styles.input}
               placeholder="Digite seu nome"
@@ -110,10 +140,7 @@ export default function Cadastro() {
 
           {/* EMAIL */}
           <View style={styles.campo}>
-            <Text style={styles.label}>
-              E-mail
-            </Text>
-
+            <Text style={styles.label}>E-mail</Text>
             <TextInput
               style={styles.input}
               placeholder="Digite seu email"
@@ -126,10 +153,7 @@ export default function Cadastro() {
 
           {/* SENHA */}
           <View style={styles.campo}>
-            <Text style={styles.label}>
-              Senha
-            </Text>
-
+            <Text style={styles.label}>Senha</Text>
             <TextInput
               style={styles.input}
               placeholder="Digite sua senha"
@@ -145,34 +169,44 @@ export default function Cadastro() {
             style={styles.botao}
             onPress={realizarCadastro}
           >
-            <Text style={styles.textoBotao}>
-              Cadastrar
-            </Text>
+            <Text style={styles.textoBotao}>Cadastrar</Text>
           </TouchableOpacity>
+
+          {/* Mensagem de validação visível na tela */}
+          {mensagemSistema !== '' && (
+            <Text
+              style={{
+                marginTop: 10,
+                textAlign: 'center',
+                color: tipoMensagem === 'erro' ? 'red' : 'green'
+              }}
+            >
+              {mensagemSistema}
+            </Text>
+          )}
 
         </View>
       </View>
 
       {/* RODAPÉ */}
-      <View style={styles.rodape}>
-
-        <Text style={styles.textoRodape}>
-          © 2026 Café Central. Todos os direitos reservados.
-        </Text>
-
-        <Link href="/contato">
-          <Text style={styles.linkRodape}>
-            Entre em contato
-          </Text>
-        </Link>
-
-      </View>
+      <Footer></Footer>
 
     </ScrollView>
   );
 }
 
+
 const styles = StyleSheet.create({
+
+   corpo: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+
+
+  scrollContainer: {
+    flexGrow: 1,
+  },
 
   topo: {
     backgroundColor: '#1f3b2c',
@@ -269,7 +303,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#1f3b2c',
-    marginTop: 30,
+    marginTop: 'auto',
   },
 
   textoRodape: {

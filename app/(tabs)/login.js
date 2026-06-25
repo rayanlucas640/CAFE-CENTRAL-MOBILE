@@ -1,91 +1,99 @@
-import React, { useState } from 'react';
-
+import { Link, useRouter } from 'expo-router';
+import { useState } from 'react';
 import {
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Alert,
+  View
 } from 'react-native';
+import Footer from '../../components/footer';
+import Header from '../../components/header';
 
-import { Link } from 'expo-router';
+
+const API_URL = "http://localhost:3000";
 
 export default function Login() {
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  const realizarLogin = () => {
+  const [mensagemSistema, setMensagemSistema] = useState('');
+  const [tipoMensagem, setTipoMensagem] = useState('');
 
-    if (email === '' || senha === '') {
+  const router = useRouter();
 
-      Alert.alert(
-        'Erro',
-        'Por favor, preencha todos os campos.'
-      );
+  async function realizarLogin() {
 
+    // VALIDAÇÕES
+    if (email === '') {
+      setMensagemSistema("Digite seu e-mail!");
+      setTipoMensagem("erro");
       return;
     }
 
-    Alert.alert(
-      'Sucesso',
-      'Login realizado com sucesso!'
-    );
+    if (!email.includes("@") || !email.includes(".com")) {
+      setMensagemSistema("Digite um e-mail válido!");
+      setTipoMensagem("erro");
+      return;
+    }
 
-    setEmail('');
-    setSenha('');
-  };
+    if (senha === '') {
+      setMensagemSistema("Digite sua senha!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    if (senha.length < 6) {
+      setMensagemSistema("A senha deve ter pelo menos 6 caracteres!");
+      setTipoMensagem("erro");
+      return;
+    }
+
+    // API LOGIN
+    try {
+      const resposta = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: email,
+          senha: senha
+        })
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+
+      setMensagemSistema(dados.mensagem || "Login realizado com sucesso!");
+      setTipoMensagem("sucesso");
+
+      setEmail('');
+      setSenha('');
+
+      router.push('/cardapio');
+
+    } else {
+      setMensagemSistema(dados.erro || "Erro ao fazer login");
+      setTipoMensagem("erro");
+    }
+
+      } catch (erro) {
+        setMensagemSistema("Erro ao conectar com o servidor");
+        setTipoMensagem("erro");
+      }
+
+  } // ✅ SÓ FOI ADICIONADA ESSA CHAVE AQUI
 
   return (
-
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
-      <View style={styles.topo}>
-
-        <Link href="/">
-          <View>
-            <Text style={styles.logoP1}>Café</Text>
-            <Text style={styles.logoP2}>Central</Text>
-          </View>
-        </Link>
-
-        <View style={styles.menu}>
-
-          <Link href="/">
-            <Text style={styles.menuItem}>
-              Início
-            </Text>
-          </Link>
-
-          <Link href="/sobre">
-            <Text style={styles.menuItem}>
-              Sobre
-            </Text>
-          </Link>
-
-          <Link href="/cardapio">
-            <Text style={styles.menuItem}>
-              Cardápio
-            </Text>
-          </Link>
-
-          <Link href="/contato">
-            <Text style={styles.menuItem}>
-              Contato
-            </Text>
-          </Link>
-
-          <Link href="/login">
-            <Text style={[styles.menuItem, styles.ativo]}>
-              Login
-            </Text>
-          </Link>
-
-        </View>
-      </View>
+      <Header ativo="login"></Header>
 
       {/* CONTEÚDO */}
       <View style={styles.container}>
@@ -103,9 +111,7 @@ export default function Login() {
           {/* EMAIL */}
           <View style={styles.campo}>
 
-            <Text style={styles.label}>
-              E-mail
-            </Text>
+            <Text style={styles.label}>E-mail</Text>
 
             <TextInput
               style={styles.input}
@@ -121,9 +127,7 @@ export default function Login() {
           {/* SENHA */}
           <View style={styles.campo}>
 
-            <Text style={styles.label}>
-              Senha
-            </Text>
+            <Text style={styles.label}>Senha</Text>
 
             <TextInput
               style={styles.input}
@@ -137,6 +141,7 @@ export default function Login() {
           </View>
 
           {/* BOTÃO LOGIN */}
+          <Link href='/login'>
           <TouchableOpacity
             style={styles.botao}
             onPress={realizarLogin}
@@ -147,6 +152,7 @@ export default function Login() {
             </Text>
 
           </TouchableOpacity>
+          </Link>
 
           {/* LINK CADASTRO */}
           <Link href="/cadastro">
@@ -161,27 +167,22 @@ export default function Login() {
       </View>
 
       {/* RODAPÉ */}
-      <View style={styles.rodape}>
-
-        <Text style={styles.textoRodape}>
-          © 2026 Café Central. Todos os direitos reservados.
-        </Text>
-
-        <Link href="/contato">
-
-          <Text style={styles.linkRodape}>
-            Entre em contato
-          </Text>
-
-        </Link>
-
-      </View>
+      <Footer></Footer>
 
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+
+   corpo: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+
+  scrollContainer: {
+    flexGrow: 1,
+  },
 
   topo: {
     backgroundColor: '#1f3b2c',
@@ -285,7 +286,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#1f3b2c',
-    marginTop: 30,
+    marginTop: 'auto',
   },
 
   textoRodape: {
