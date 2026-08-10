@@ -1,19 +1,29 @@
-Café Central Mobile
+☕ Café Central Mobile
 
-Aplicativo mobile do Café Central, desenvolvido com Expo Go e React Native, com foco em oferecer uma experiência prática e agradável para clientes realizarem pedidos, visualizarem o cardápio e acompanharem novidades.
+Sobre o projeto
 
-🚀 Tecnologias utilizadas
-React Native
-Expo Go
-JavaScript / TypeScript
-React Navigation
-Axios (ou fetch)
-Context API / Redux (se aplicável)
+O Café Central Mobile é uma aplicação desenvolvida para dispositivos móveis, com o objetivo de apresentar informações sobre a cafeteria e seu cardápio, permitindo ao usuário navegar pelas telas e consultar os produtos disponíveis.
 
-📦 Funcionalidades
-📋 Visualização do cardápio
-🛒 Adição de produtos ao carrinho
-💳 Finalização de pedidos
-👤 Cadastro e login de usuários
-📍 Localização da cafeteria
-🔔 Notificações (se implementado)
+Integrantes
+
+- Rayan
+- Daniel
+- Enzo
+
+Tecnologias utilizadas
+
+- React Native
+- Expo
+- JavaScript
+- Node.js
+
+Requisitos
+
+Para executar o projeto, é necessário ter:
+
+- Node.js
+- npm
+- Expo
+- Git
+- Android Studio ou dispositivo móvel compatível
+
