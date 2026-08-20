@@ -94,7 +94,7 @@ export default function Contato() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.corpo}>
+    <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
       <Header ativo="contato"></Header>
@@ -148,6 +148,10 @@ export default function Contato() {
 
 const styles = StyleSheet.create({
 
+  pagina: {
+    flex: 1,
+  },
+
   corpo: {
     flexGrow: 1,
     justifyContent: 'space-between',
@@ -192,6 +196,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    flex: 1,
     padding: 20,
   },
 
@@ -229,6 +234,7 @@ const styles = StyleSheet.create({
   },
 
   rodape: {
+    width: '100%',
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#1f3b2c',

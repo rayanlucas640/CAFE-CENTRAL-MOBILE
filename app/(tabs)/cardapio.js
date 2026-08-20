@@ -23,6 +23,12 @@ export default function Cardapios() {
     'cafeg.jpg': require('../../assets/images/cafeg.jpg'),
     'cafem.jpg': require('../../assets/images/cafem.jpg'),
     'misto.jpg': require('../../assets/images/misto.jpg'),
+    'cheesecake.jpg': require('../../assets/images/cheesecake.jpg'),
+    'chocolate.jpg': require('../../assets/images/chocolate.jpg'),
+    'cookie.jpg': require('../../assets/images/cookie.jpg'),
+    'croissant.jpg': require('../../assets/images/croissant.jpg'),
+    'mocha.jpg': require('../../assets/images/mocha.jpg'),
+    'paodequeijo.jpg': require('../../assets/images/paodequeijo.jpg'),
   };
 
   const cardapio = cardapioJson.map((item) => ({
@@ -40,7 +46,7 @@ export default function Cardapios() {
 
   return (
 
-    <ScrollView>
+    <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
       <View style={styles.topo}>
@@ -98,6 +104,7 @@ export default function Cardapios() {
         <FlatList
           data={cardapiosFiltrados}
           keyExtractor={(item) => item.id}
+          numColumns={3}
           scrollEnabled={false}
 
           renderItem={({ item }) => (
@@ -178,6 +185,14 @@ export default function Cardapios() {
 
 const styles = StyleSheet.create({
 
+  pagina: {
+    flex: 1,
+  },
+
+  corpo: {
+    flexGrow: 1,
+  },
+
   topo: {
     backgroundColor: '#1f3b2c',
     padding: 20,
@@ -213,6 +228,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    flex: 1,
     padding: 20,
   },
 
@@ -233,15 +249,16 @@ const styles = StyleSheet.create({
   },
 
   card: {
+    flex: 1,
+    margin: 5,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,
-    padding: 15,
-    marginBottom: 20,
+    padding: 8,
   },
 
   cardTitulo: {
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 
@@ -253,11 +270,12 @@ const styles = StyleSheet.create({
   },
 
   descricao: {
+    fontSize: 12,
     marginBottom: 10,
   },
 
   preco: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#1f3b2c',
   },
@@ -265,19 +283,22 @@ const styles = StyleSheet.create({
   botao: {
     marginTop: 10,
     backgroundColor: '#1f3b2c',
-    padding: 12,
+    padding: 8,
     borderRadius: 8,
   },
 
   textoBotao: {
     color: '#fff',
     textAlign: 'center',
+    fontSize: 12,
   },
 
   rodape: {
+    width: '100%',
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#1f3b2c',
+    marginTop: 'auto',
   },
 
   textoRodape: {

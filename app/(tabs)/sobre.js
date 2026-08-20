@@ -3,9 +3,8 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 export default function Sobre() {
   return (
-    <ScrollView>
+    <ScrollView style={styles.pagina} contentContainerStyle={{ flexGrow: 1 }}>
 
-      {/* TOPO */}
       <View style={styles.topo}>
         <Link href="/">
           <View>
@@ -37,7 +36,6 @@ export default function Sobre() {
         </View>
       </View>
 
-      {/* CONTEÚDO */}
       <View style={styles.container}>
 
         <Text style={styles.titulo}>
@@ -74,7 +72,6 @@ export default function Sobre() {
 
       </View>
 
-      {/* RODAPÉ */}
       <View style={styles.rodape}>
         <Text style={styles.textoRodape}>
           © 2026 Café Central. Todos os direitos reservados.
@@ -93,7 +90,12 @@ export default function Sobre() {
 
 const styles = StyleSheet.create({
 
+  pagina: {
+    flex: 1,
+  },
+
   topo: {
+    width: '100%',
     backgroundColor: '#1f3b2c',
     padding: 20,
     alignItems: 'center',
@@ -128,6 +130,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    flex: 1,
     padding: 20,
     alignItems: 'center',
   },
@@ -153,9 +156,11 @@ const styles = StyleSheet.create({
   },
 
   rodape: {
+    width: '100%',
     backgroundColor: '#1f3b2c',
     padding: 20,
     alignItems: 'center',
+    marginTop: 'auto',
   },
 
   textoRodape: {

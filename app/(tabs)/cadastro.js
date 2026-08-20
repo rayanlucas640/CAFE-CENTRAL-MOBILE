@@ -109,7 +109,7 @@ export default function Cadastro() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.corpo}>
+    <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
       <Header ativo="cadastro"></Header>
@@ -198,11 +198,14 @@ export default function Cadastro() {
 
 const styles = StyleSheet.create({
 
-   corpo: {
+  pagina: {
+    flex: 1,
+  },
+
+  corpo: {
     flexGrow: 1,
     justifyContent: 'space-between',
   },
-
 
   scrollContainer: {
     flexGrow: 1,
@@ -243,6 +246,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    flex: 1,
     padding: 20,
   },
 
@@ -300,6 +304,7 @@ const styles = StyleSheet.create({
   },
 
   rodape: {
+    width: '100%',
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#1f3b2c',

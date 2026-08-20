@@ -11,7 +11,6 @@ import {
 import Footer from '../../components/footer';
 import Header from '../../components/header';
 
-
 const API_URL = "http://localhost:3000";
 
 export default function Login() {
@@ -90,7 +89,7 @@ export default function Login() {
   } // ✅ SÓ FOI ADICIONADA ESSA CHAVE AQUI
 
   return (
-    <ScrollView contentContainerStyle={styles.corpo}>
+    <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>
 
       {/* TOPO */}
       <Header ativo="login"></Header>
@@ -175,9 +174,13 @@ export default function Login() {
 
 const styles = StyleSheet.create({
 
-   corpo: {
+  pagina: {
+    flex: 1,
+  },
+
+  corpo: {
     flexGrow: 1,
-    justifyContent: 'space-between',
+    justify: 'space-between',
   },
 
   scrollContainer: {
@@ -185,6 +188,7 @@ const styles = StyleSheet.create({
   },
 
   topo: {
+    width: '100%',
     backgroundColor: '#1f3b2c',
     padding: 20,
     alignItems: 'center',
@@ -219,6 +223,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    flex: 1,
     padding: 20,
   },
 
@@ -283,6 +288,7 @@ const styles = StyleSheet.create({
   },
 
   rodape: {
+    width: '100%',
     padding: 20,
     alignItems: 'center',
     backgroundColor: '#1f3b2c',

@@ -5,7 +5,7 @@
       "img": "bolo.jpg",
       "descricao": "Bolos caseiros, feitos com muito amor🍰",
       "conteudos": "Bolo no pote artesanal feito com massa fofinha, recheios cremosos e cobertura generosa. Uma sobremesa prática e deliciosa.",
-      "preco": 17.99
+      "preco": 12.99
     },
     {
       "id": "2",
@@ -13,7 +13,7 @@
       "img": "capp.jpg",
       "descricao": "Combinação perfeita de café, leite vaporizado e espuma cremosa.☕",
       "conteudos": "Bebida italiana feita com espresso, leite vaporizado e espuma cremosa, resultando em um café suave e encorpado.",
-      "preco": 22.99
+      "preco": 14.99
     },
     {
       "id": "3",
@@ -21,7 +21,7 @@
       "img": "cafe.jpg",
       "descricao": "Um café preto comum.☕",
       "conteudos": "Café preparado sob alta pressão, com sabor intenso, aroma marcante e perfil tradicional.",
-      "preco": 7.99
+      "preco": 4.99
     },
     {
       "id": "4",
@@ -45,6 +45,54 @@
       "img": "misto.jpg",
       "descricao": "Pão na chapa com queijo derretido e presunto, simples e delicioso.🥪",
       "conteudos": "Sanduíche quente feito com pão tostado, queijo derretido e presunto, perfeito para um lanche rápido e saboroso.",
-      "preco": 14.99
+      "preco": 8.99
+    },
+    {
+      "id": "7",
+      "titulo": "Cheesecake de Morango",
+      "img": "cheesecake.jpg",
+      "descricao": "Cheesecake artesanal com cobertura de morango. 🍓",
+      "conteudos": "Torta cremosa com base crocante de biscoito, recheio suave de cream cheese e uma generosa cobertura artesanal de morangos frescos.",
+      "preco": 15.70
+    },
+    {
+      "id": "8",
+      "titulo": "Chocolate Quente",
+      "img": "chocolate.jpg",
+      "descricao": "Chocolate quente cremoso e delicioso. 🍫",
+      "conteudos": "Bebida cremosa preparada com chocolate meio amargo derretido no leite morno, finalizada com um toque sutil de baunilha.",
+      "preco": 7.99
+    },
+    {
+      "id": "9",
+      "titulo": "Cookie de Chocolate",
+      "img": "cookie.jpg",
+      "descricao": "Cookie artesanal com gotas de chocolate. 🍪",
+      "conteudos": "Biscoito amanteigado de casca crocante e miolo macio, recheado com fartas gotas de chocolate nobre.",
+      "preco": 2.50
+    },
+    {
+      "id": "10",
+      "titulo": "Croissant de Queijo",
+      "img": "croissant.jpg",
+      "descricao": "Croissant amanteigado recheado com queijo. 🥐",
+      "conteudos": "Massa folhada artesanal e amanteigada, assada até dourar e recheada com queijo derretido bem quentinho.",
+      "preco": 9.80
+    },
+    {
+      "id": "11",
+      "titulo": "Mocha",
+      "img": "mocha.jpg",
+      "descricao": "Café espresso combinado com chocolate e leite. ☕",
+      "conteudos": "Bebida quente composta por uma dose de espresso encorpado, calda de chocolate e leite vaporizado com espuma aveludada.",
+      "preco": 7.50
+    },
+    {
+      "id": "12",
+      "titulo": "Pão de Queijo",
+      "img": "paodequeijo.jpg",
+      "descricao": "Pães de queijo quentinhos e crocantes. 🧀",
+      "conteudos": "Pão de queijo mineiro tradicional, assado na hora, com casquinha dourada e crocante por fora e miolo macio e puxa-puxa por dentro.",
+      "preco": 0.50
     }
   ]
