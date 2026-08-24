@@ -14,7 +14,7 @@ import { Link, useRouter } from 'expo-router';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://cafe-central-8lgi.onrender.com";
 
 export default function Cadastro() {
 

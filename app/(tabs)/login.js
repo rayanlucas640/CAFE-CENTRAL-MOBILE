@@ -11,7 +11,7 @@ import {
 import Footer from '../../components/footer';
 import Header from '../../components/header';
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://cafe-central-8lgi.onrender.com";
 
 export default function Login() {
 
