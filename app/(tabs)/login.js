@@ -86,7 +86,7 @@ export default function Login() {
         setTipoMensagem("erro");
       }
 
-  } // ✅ SÓ FOI ADICIONADA ESSA CHAVE AQUI
+  } 
 
   return (
     <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>

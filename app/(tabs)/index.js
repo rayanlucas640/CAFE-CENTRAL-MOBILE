@@ -32,19 +32,23 @@ export default function Index() {
         </View>
       </View>
 
-      {/* CONTEÚDO PRINCIPAL (COM PADDING NAS LATERAIS) */}
+      {/* CONTEÚDO PRINCIPAL */}
       <View style={styles.principal}>
         <View style={styles.titulosCabc}>
           <Text style={styles.tituloCabc}>Seja Bem-Vindo ao Nosso Aplicativo da Café Central</Text>
 
           <View style={styles.botoes}>
+            <Link href='/login'>
             <TouchableOpacity style={styles.btnPrimario}>
               <Text style={styles.textoBotao}>Fazer Login</Text>
             </TouchableOpacity>
+            </Link>
 
+            <Link href='/contato'>
             <TouchableOpacity style={styles.btnSecundario}>
               <Text style={styles.textoBotao}>Fale Conosco</Text>
             </TouchableOpacity>
+            </Link>
           </View>
 
           <Text style={styles.subCabc}>Porque comprar na Café Central</Text>

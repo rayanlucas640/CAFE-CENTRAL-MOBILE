@@ -22,10 +22,6 @@ export default function Sobre() {
             <Text style={[styles.menuItem, styles.ativo]}>Sobre</Text>
           </Link>
 
-          <Link href="/cardapio">
-            <Text style={styles.menuItem}>Cardápio</Text>
-          </Link>
-
           <Link href="/contato">
             <Text style={styles.menuItem}>Contato</Text>
           </Link>
@@ -143,7 +139,7 @@ const styles = StyleSheet.create({
   },
 
   tituloSecao: {
-    fontSize: 18,
+    fontSize: 26,
     fontWeight: 'bold',
     marginTop: 15,
     marginBottom: 5,
@@ -153,6 +149,16 @@ const styles = StyleSheet.create({
   texto: {
     textAlign: 'center',
     marginBottom: 8,
+    backgroundColor: '#e1d9d1',
+    borderRadius: 12,
+    padding: 16,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
   },
 
   rodape: {
