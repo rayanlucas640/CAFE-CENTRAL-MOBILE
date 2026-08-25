@@ -14,29 +14,28 @@ import { Link } from 'expo-router';
 
 import cardapioJson from '../../assets/data/cardapio.json';
 
-export default function Cardapios() {
+const imagensCardapio = {
+  'bolo.jpg': require('../../assets/images/bolo.jpg'),
+  'capp.jpg': require('../../assets/images/capp.jpg'),
+  'cafe.jpg': require('../../assets/images/cafe.jpg'),
+  'cafeg.jpg': require('../../assets/images/cafeg.jpg'),
+  'cafem.jpg': require('../../assets/images/cafem.jpg'),
+  'misto.jpg': require('../../assets/images/misto.jpg'),
+  'cheesecake.jpg': require('../../assets/images/cheesecake.jpg'),
+  'chocolate.jpg': require('../../assets/images/chocolate.jpg'),
+  'cookie.jpg': require('../../assets/images/cookie.jpg'),
+  'croissant.jpg': require('../../assets/images/croissant.jpg'),
+  'mocha.jpg': require('../../assets/images/mocha.jpg'),
+  'paodequeijo.jpg': require('../../assets/images/paodequeijo.jpg'),
+};
 
-  const imagensCardapio = {
-    'bolo.jpg': require('../../assets/images/bolo.jpg'),
-    'capp.jpg': require('../../assets/images/capp.jpg'),
-    'cafe.jpg': require('../../assets/images/cafe.jpg'),
-    'cafeg.jpg': require('../../assets/images/cafeg.jpg'),
-    'cafem.jpg': require('../../assets/images/cafem.jpg'),
-    'misto.jpg': require('../../assets/images/misto.jpg'),
-    'cheesecake.jpg': require('../../assets/images/cheesecake.jpg'),
-    'chocolate.jpg': require('../../assets/images/chocolate.jpg'),
-    'cookie.jpg': require('../../assets/images/cookie.jpg'),
-    'croissant.jpg': require('../../assets/images/croissant.jpg'),
-    'mocha.jpg': require('../../assets/images/mocha.jpg'),
-    'paodequeijo.jpg': require('../../assets/images/paodequeijo.jpg'),
-  };
+export default function Cardapios() {
+  const [busca, setBusca] = useState('');
 
   const cardapio = cardapioJson.map((item) => ({
     ...item,
     img: imagensCardapio[item.img],
   }));
-
-  const [busca, setBusca] = useState('');
 
   const cardapiosFiltrados = cardapio.filter((item) => {
     return item.titulo
@@ -45,51 +44,64 @@ export default function Cardapios() {
   });
 
   return (
-
-    <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>
-
+    <ScrollView
+      style={styles.pagina}
+      contentContainerStyle={styles.corpo}
+      keyboardShouldPersistTaps="handled"
+    >
       {/* TOPO */}
       <View style={styles.topo}>
+        <Link href="/" asChild>
+          <TouchableOpacity>
+            <View>
+              <Text style={styles.logoP1}>
+                Café
+              </Text>
 
-        <Link href="/">
-          <View>
-            <Text style={styles.logoP1}>Café</Text>
-            <Text style={styles.logoP2}>Central</Text>
-          </View>
+              <Text style={styles.logoP2}>
+                Central
+              </Text>
+            </View>
+          </TouchableOpacity>
         </Link>
 
         <View style={styles.menu}>
-
-          <Link href="/">
-            <Text style={styles.menuItem}>
-              Início
-            </Text>
+          <Link href="/" asChild>
+            <TouchableOpacity>
+              <Text style={styles.menuItem}>
+                Início
+              </Text>
+            </TouchableOpacity>
           </Link>
 
-          <Link href="/sobre">
-            <Text style={styles.menuItem}>
-              Sobre
-            </Text>
+          <Link href="/sobre" asChild>
+            <TouchableOpacity>
+              <Text style={styles.menuItem}>
+                Sobre
+              </Text>
+            </TouchableOpacity>
           </Link>
 
-          <Link href="/cardapio">
-            <Text style={[styles.menuItem, styles.ativo]}>
-              Cardápio
-            </Text>
+          <Link href="/cardapio" asChild>
+            <TouchableOpacity>
+              <Text style={[styles.menuItem, styles.ativo]}>
+                Cardápio
+              </Text>
+            </TouchableOpacity>
           </Link>
 
-          <Link href="/contato">
-            <Text style={styles.menuItem}>
-              Contato
-            </Text>
+          <Link href="/contato" asChild>
+            <TouchableOpacity>
+              <Text style={styles.menuItem}>
+                Contato
+              </Text>
+            </TouchableOpacity>
           </Link>
-
         </View>
       </View>
 
       {/* CONTEÚDO */}
       <View style={styles.container}>
-
         <Text style={styles.tituloPagina}>
           Nosso Cardápio
         </Text>
@@ -99,18 +111,17 @@ export default function Cardapios() {
           placeholder="Buscar item"
           value={busca}
           onChangeText={setBusca}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
 
         <FlatList
           data={cardapiosFiltrados}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
           numColumns={3}
           scrollEnabled={false}
-
           renderItem={({ item }) => (
-
             <View style={styles.card}>
-
               <Text style={styles.cardTitulo}>
                 {item.titulo}
               </Text>
@@ -125,68 +136,57 @@ export default function Cardapios() {
               </Text>
 
               <Text style={styles.preco}>
-                R$ {item.preco.toFixed(2)}
+                R$ {Number(item.preco).toFixed(2)}
               </Text>
 
               <Link
                 href={{
                   pathname: '/detalhesCardapio',
-
                   params: {
                     titulo: item.titulo,
                     descricao: item.descricao,
                     preco: item.preco,
                     conteudos: item.conteudos,
-                  }
+                  },
                 }}
-
                 asChild
               >
-
-                <TouchableOpacity style={styles.botao}>
-
+                <TouchableOpacity
+                  style={styles.botao}
+                  activeOpacity={0.8}
+                >
                   <Text style={styles.textoBotao}>
                     Ver detalhes
                   </Text>
-
                 </TouchableOpacity>
-
               </Link>
-
             </View>
-
           )}
-
         />
-
       </View>
 
       {/* RODAPÉ */}
       <View style={styles.rodape}>
-
         <Text style={styles.textoRodape}>
           © 2026 Café Central. Todos os direitos reservados.
         </Text>
 
-        <Link href="/contato">
-
-          <Text style={styles.linkRodape}>
-            Entre em contato
-          </Text>
-
+        <Link href="/contato" asChild>
+          <TouchableOpacity>
+            <Text style={styles.linkRodape}>
+              Entre em contato
+            </Text>
+          </TouchableOpacity>
         </Link>
-
       </View>
-
     </ScrollView>
-
   );
 }
 
 const styles = StyleSheet.create({
-
   pagina: {
     flex: 1,
+    backgroundColor: '#fff',
   },
 
   corpo: {
@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     textAlign: 'center',
+    fontSize: 16,
   },
 
   card: {
@@ -255,6 +256,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 10,
     padding: 8,
+    backgroundColor: '#fff',
   },
 
   cardTitulo: {
@@ -303,11 +305,10 @@ const styles = StyleSheet.create({
 
   textoRodape: {
     marginBottom: 10,
-    color: '#ffffff',
+    color: '#fff',
   },
 
   linkRodape: {
-    color: '#ffffff',
+    color: '#fff',
   },
-
 });

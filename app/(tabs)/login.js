@@ -6,97 +6,122 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
+
 import Footer from '../../components/footer';
 import Header from '../../components/header';
 
-const API_URL = "https://cafe-central-8lgi.onrender.com";
+const API_URL = 'https://cafe-central-8lgi.onrender.com';
 
 export default function Login() {
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   const [mensagemSistema, setMensagemSistema] = useState('');
   const [tipoMensagem, setTipoMensagem] = useState('');
-
-  const router = useRouter();
+  const [carregando, setCarregando] = useState(false);
 
   async function realizarLogin() {
-
-    // VALIDAÇÕES
-    if (email === '') {
-      setMensagemSistema("Digite seu e-mail!");
-      setTipoMensagem("erro");
+    // Evita vários cliques enquanto o login está acontecendo
+    if (carregando) {
       return;
     }
 
-    if (!email.includes("@") || !email.includes(".com")) {
-      setMensagemSistema("Digite um e-mail válido!");
-      setTipoMensagem("erro");
+    // Limpa mensagem anterior
+    setMensagemSistema('');
+    setTipoMensagem('');
+
+    // VALIDAÇÕES
+    if (email.trim() === '') {
+      setMensagemSistema('Digite seu e-mail!');
+      setTipoMensagem('erro');
+      return;
+    }
+
+    if (!email.includes('@') || !email.includes('.com')) {
+      setMensagemSistema('Digite um e-mail válido!');
+      setTipoMensagem('erro');
       return;
     }
 
     if (senha === '') {
-      setMensagemSistema("Digite sua senha!");
-      setTipoMensagem("erro");
+      setMensagemSistema('Digite sua senha!');
+      setTipoMensagem('erro');
       return;
     }
 
     if (senha.length < 6) {
-      setMensagemSistema("A senha deve ter pelo menos 6 caracteres!");
-      setTipoMensagem("erro");
+      setMensagemSistema('A senha deve ter pelo menos 6 caracteres!');
+      setTipoMensagem('erro');
       return;
     }
 
-    // API LOGIN
     try {
+      setCarregando(true);
+
       const resposta = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         credentials: 'include',
         body: JSON.stringify({
-          email: email,
-          senha: senha
-        })
+          email: email.trim(),
+          senha: senha,
+        }),
       });
 
       const dados = await resposta.json();
 
-      if (resposta.ok) {
+      if (!resposta.ok) {
+        setMensagemSistema(
+          dados.erro || dados.mensagem || 'E-mail ou senha incorretos.'
+        );
+        setTipoMensagem('erro');
+        return;
+      }
 
-      setMensagemSistema(dados.mensagem || "Login realizado com sucesso!");
-      setTipoMensagem("sucesso");
+      // Login realizado com sucesso
+      setMensagemSistema(
+        dados.mensagem || 'Login realizado com sucesso!'
+      );
+      setTipoMensagem('sucesso');
 
+      // Limpa os campos
       setEmail('');
       setSenha('');
 
-      router.push('/cardapio');
+      // Pequeno atraso para garantir que a resposta terminou
+      // antes da navegação
+      setTimeout(() => {
+        router.replace('/cardapio');
+      }, 300);
+    } catch (erro) {
+      console.error('Erro no login:', erro);
 
-    } else {
-      setMensagemSistema(dados.erro || "Erro ao fazer login");
-      setTipoMensagem("erro");
+      setMensagemSistema(
+        'Não foi possível conectar com o servidor.'
+      );
+      setTipoMensagem('erro');
+    } finally {
+      setCarregando(false);
     }
-
-      } catch (erro) {
-        setMensagemSistema("Erro ao conectar com o servidor");
-        setTipoMensagem("erro");
-      }
-
-  } 
+  }
 
   return (
-    <ScrollView style={styles.pagina} contentContainerStyle={styles.corpo}>
-
+    <ScrollView
+      style={styles.pagina}
+      contentContainerStyle={styles.corpo}
+      keyboardShouldPersistTaps="handled"
+    >
       {/* TOPO */}
-      <Header ativo="login"></Header>
+      <Header ativo="login" />
 
       {/* CONTEÚDO */}
       <View style={styles.container}>
-
         <Text style={styles.tituloPagina}>
           Faça seu Login
         </Text>
@@ -106,120 +131,100 @@ export default function Login() {
         </Text>
 
         <View style={styles.card}>
-
           {/* EMAIL */}
           <View style={styles.campo}>
-
-            <Text style={styles.label}>E-mail</Text>
+            <Text style={styles.label}>
+              E-mail
+            </Text>
 
             <TextInput
               style={styles.input}
               placeholder="Digite seu email"
               keyboardType="email-address"
               autoCapitalize="none"
+              autoCorrect={false}
               value={email}
               onChangeText={setEmail}
+              editable={!carregando}
             />
-
           </View>
 
           {/* SENHA */}
           <View style={styles.campo}>
-
-            <Text style={styles.label}>Senha</Text>
+            <Text style={styles.label}>
+              Senha
+            </Text>
 
             <TextInput
               style={styles.input}
               placeholder="Digite sua senha"
-              secureTextEntry={true}
+              secureTextEntry
               autoCapitalize="none"
+              autoCorrect={false}
               value={senha}
               onChangeText={setSenha}
+              editable={!carregando}
             />
-
           </View>
 
-          {/* BOTÃO LOGIN */}
-          <Link href='/login'>
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={realizarLogin}
-          >
-
-            <Text style={styles.textoBotao}>
-              Entrar
+          {/* MENSAGEM DO SISTEMA */}
+          {mensagemSistema !== '' && (
+            <Text
+              style={
+                tipoMensagem === 'sucesso'
+                  ? styles.mensagemSucesso
+                  : styles.mensagemErro
+              }
+            >
+              {mensagemSistema}
             </Text>
+          )}
 
+          {/* BOTÃO LOGIN */}
+          {/* IMPORTANTE:
+              Não colocar Link em volta deste botão.
+              O próprio realizarLogin controla a navegação.
+          */}
+          <TouchableOpacity
+            style={[
+              styles.botao,
+              carregando && styles.botaoDesativado,
+            ]}
+            onPress={realizarLogin}
+            disabled={carregando}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.textoBotao}>
+              {carregando ? 'Entrando...' : 'Entrar'}
+            </Text>
           </TouchableOpacity>
-          </Link>
 
           {/* LINK CADASTRO */}
-          <Link href="/cadastro">
-
-            <Text style={styles.linkCadastro}>
-              Não possui conta? Cadastre-se
-            </Text>
-
+          <Link href="/cadastro" asChild>
+            <TouchableOpacity disabled={carregando}>
+              <Text style={styles.linkCadastro}>
+                Não possui conta? Cadastre-se
+              </Text>
+            </TouchableOpacity>
           </Link>
-
         </View>
       </View>
 
       {/* RODAPÉ */}
-      <Footer></Footer>
-
+      <Footer />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-
   pagina: {
     flex: 1,
+    backgroundColor: '#fff',
   },
 
   corpo: {
     flexGrow: 1,
-    justify: 'space-between',
-  },
-
-  scrollContainer: {
-    flexGrow: 1,
-  },
-
-  topo: {
-    width: '100%',
-    backgroundColor: '#1f3b2c',
-    padding: 20,
-    alignItems: 'center',
-  },
-
-  logoP1: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-
-  logoP2: {
-    color: '#c7a17a',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-
-  menu: {
-    marginTop: 10,
-    alignItems: 'center',
-    gap: 8,
-  },
-
-  menuItem: {
-    color: '#fff',
-    fontSize: 16,
-  },
-
-  ativo: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
+    justifyContent: 'space-between',
   },
 
   container: {
@@ -246,6 +251,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 10,
     padding: 20,
+    backgroundColor: '#fff',
   },
 
   campo: {
@@ -264,6 +270,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     backgroundColor: '#fff',
+    fontSize: 16,
+  },
+
+  mensagemErro: {
+    color: '#c62828',
+    textAlign: 'center',
+    marginBottom: 12,
+    fontWeight: 'bold',
+  },
+
+  mensagemSucesso: {
+    color: '#2e7d32',
+    textAlign: 'center',
+    marginBottom: 12,
+    fontWeight: 'bold',
   },
 
   botao: {
@@ -271,6 +292,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#1f3b2c',
     padding: 14,
     borderRadius: 8,
+  },
+
+  botaoDesativado: {
+    opacity: 0.6,
   },
 
   textoBotao: {
@@ -286,22 +311,4 @@ const styles = StyleSheet.create({
     color: '#1f3b2c',
     fontWeight: 'bold',
   },
-
-  rodape: {
-    width: '100%',
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: '#1f3b2c',
-    marginTop: 'auto',
-  },
-
-  textoRodape: {
-    marginBottom: 10,
-    color: '#ffffff',
-  },
-
-  linkRodape: {
-    color: '#ffffff',
-  },
-
 });
