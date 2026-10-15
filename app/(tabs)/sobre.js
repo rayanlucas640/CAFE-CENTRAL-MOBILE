@@ -85,99 +85,102 @@ export default function Sobre() {
 }
 
 const styles = StyleSheet.create({
+pagina: {
+flex: 1,
+backgroundColor: '#ffffff',
+},
 
-  pagina: {
-    flex: 1,
-  },
+topo: {
+width: '100%',
+backgroundColor: '#1f3b2c',
+padding: 20,
+alignItems: 'center',
+},
 
-  topo: {
-    width: '100%',
-    backgroundColor: '#1f3b2c',
-    padding: 20,
-    alignItems: 'center',
-  },
+logoP1: {
+color: '#ffffff',
+fontSize: 24,
+fontWeight: 'bold',
+},
 
-  logoP1: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
+logoP2: {
+color: '#c7a17a',
+fontSize: 24,
+fontWeight: 'bold',
+},
 
-  logoP2: {
-    color: '#c7a17a',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
+menu: {
+marginTop: 10,
+alignItems: 'center',
+gap: 8,
+},
 
-  menu: {
-    marginTop: 10,
-    alignItems: 'center',
-    gap: 8,
-  },
+menuItem: {
+color: '#ffffff',
+fontSize: 16,
+},
 
-  menuItem: {
-    color: '#fff',
-    fontSize: 16,
-  },
+ativo: {
+fontWeight: 'bold',
+textDecorationLine: 'underline',
+},
 
-  ativo: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
-  },
+container: {
+flex: 1,
+padding: 20,
+alignItems: 'center',
+backgroundColor: '#ffffff',
+},
 
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-  },
+titulo: {
+fontSize: 26,
+fontWeight: 'bold',
+marginBottom: 15,
+textAlign: 'center',
+color: '#1f3b2c',
+},
 
-  titulo: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    textAlign: 'center',
-  },
+tituloSecao: {
+fontSize: 26,
+fontWeight: 'bold',
+marginTop: 15,
+marginBottom: 5,
+textAlign: 'center',
+color: '#1f3b2c',
+},
 
-  tituloSecao: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginTop: 15,
-    marginBottom: 5,
-    textAlign: 'center',
-  },
+texto: {
+color: '#2b2b2b',
+textAlign: 'center',
+marginBottom: 8,
+backgroundColor: '#e1d9d1',
+borderRadius: 12,
+padding: 16,
+elevation: 3,
+shadowColor: '#000000',
+shadowOffset: { width: 0, height: 2 },
+shadowOpacity: 0.1,
+shadowRadius: 4,
+borderWidth: 1,
+borderColor: '#d2c7bc',
+},
 
-  texto: {
-    textAlign: 'center',
-    marginBottom: 8,
-    backgroundColor: '#e1d9d1',
-    borderRadius: 12,
-    padding: 16,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-  },
+rodape: {
+width: '100%',
+backgroundColor: '#1f3b2c',
+padding: 20,
+alignItems: 'center',
+marginTop: 'auto',
+},
 
-  rodape: {
-    width: '100%',
-    backgroundColor: '#1f3b2c',
-    padding: 20,
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
+textoRodape: {
+color: '#ffffff',
+fontSize: 12,
+marginBottom: 5,
+},
 
-  textoRodape: {
-    color: '#fff',
-    fontSize: 12,
-    marginBottom: 5,
-  },
-
-  linkRodape: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-
+linkRodape: {
+color: '#ffffff',
+fontWeight: 'bold',
+},
 });
